@@ -5,6 +5,8 @@ import "./ExpenseForm.css";
 const ExpenseForm = (props) => {
   const intialExpenseState = {title: "", amount: "", date: ""}
   const [expense, setExpense] = useState(intialExpenseState);
+  const [addNewButtonClicked, setAddNewButtonClicked] = useState(false);
+  console.log("addNewButtonClicked: ", addNewButtonClicked);
   console.log("expense: ", expense);
 
   const titleHandler = (event) => {
@@ -41,8 +43,22 @@ const ExpenseForm = (props) => {
     setExpense(intialExpenseState);
   }
 
-  return (
-    <form onSubmit={submitHandler}>
+  const addNewExpenseHandler = () => {
+    console.log("Displaying add new expense form");
+    setAddNewButtonClicked(true);
+  }
+
+  function cancelationHandler(){
+    console.log("Canceling add new expense");
+    setAddNewButtonClicked(false);
+  }
+
+  let displayedContent; 
+
+  if (!addNewButtonClicked) {
+    displayedContent = <div><button onClick={addNewExpenseHandler}>Add New Expense</button></div>
+  } else {
+    displayedContent = <form onSubmit={submitHandler}>
       <div className="new-expense__controls">
         <div className="new-expense__control">
           <label>Title</label>
@@ -61,9 +77,14 @@ const ExpenseForm = (props) => {
       </div>
 
       <div className="new-expense__actions">
+        <button type="button" onClick={cancelationHandler}>Cancel</button>
         <button type="submit">Add Expense</button>
       </div>
     </form>
+  }
+
+  return (
+    <div>{displayedContent}</div>
   );
 };
 
